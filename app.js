@@ -87,6 +87,7 @@ function createTradeRow(trade) {
   const direction = trade.direction.toLowerCase();
   const tone = trade.rr >= 0 ? "positive" : "negative";
   const pairCode = trade.pair.toLowerCase();
+  const directionIcon = createDirectionIcon(direction);
 
   return `
     <tr>
@@ -108,7 +109,7 @@ function createTradeRow(trade) {
       <td>
         <div class="direction-cell">
           <span class="direction-pill ${direction}">
-            <span class="direction-icon" aria-hidden="true"></span>
+            <span class="direction-icon" aria-hidden="true">${directionIcon}</span>
             ${escapeHTML(trade.direction)}
           </span>
         </div>
@@ -119,6 +120,19 @@ function createTradeRow(trade) {
         </div>
       </td>
     </tr>
+  `;
+}
+
+function createDirectionIcon(direction) {
+  const path =
+    direction === "short"
+      ? '<path d="M5 5l10 10M15 8v7H8"></path>'
+      : '<path d="M5 15L15 5M8 5h7v7"></path>';
+
+  return `
+    <svg viewBox="0 0 20 20" fill="none" focusable="false">
+      ${path}
+    </svg>
   `;
 }
 
