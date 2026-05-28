@@ -1,50 +1,49 @@
 const journalSettings = {
   trader: "trademark830am",
-  period: "October 2025",
+  period: "May 2026",
+  costs: {
+    swap: 0.66,
+    commission: 0.1,
+    slippage: 0.3,
+  },
 };
 
 const trades = [
   {
-    date: "22.10.2025 - 28.10.2025",
-    pair: "GBPUSD",
-    direction: "Long",
-    rr: -1,
-    costs: { swap: 0.03, commission: 0.04, slippage: 0 },
-  },
-  {
-    date: "14.10.2025 - 17.10.2025",
-    pair: "XAUUSD",
-    direction: "Short",
-    rr: 1.8,
-    costs: { swap: 0.02, commission: 0.05, slippage: 0.02 },
-  },
-  {
-    date: "13.10.2025 - 14.10.2025",
-    pair: "GBPUSD",
-    direction: "Long",
-    rr: -1,
-    costs: { swap: 0, commission: 0.04, slippage: 0.01 },
-  },
-  {
-    date: "13.10.2025 - 17.10.2025",
+    date: "25.05.2026 - 29.05.2026",
     pair: "EURUSD",
     direction: "Long",
-    rr: 4.4,
-    costs: { swap: 0.04, commission: 0.05, slippage: 0.01 },
+    rr: 3,
   },
   {
-    date: "06.10.2025 - 09.10.2025",
-    pair: "GER40",
-    direction: "Short",
-    rr: 1.6,
-    costs: { swap: 0.03, commission: 0.06, slippage: 0.02 },
-  },
-  {
-    date: "03.10.2025 - 09.10.2025",
+    date: "21.05.2026 - 21.05.2026",
     pair: "EURUSD",
-    direction: "Short",
-    rr: 2.2,
-    costs: { swap: 0.01, commission: 0.05, slippage: 0.02 },
+    direction: "Long",
+    rr: -1,
+  },
+  {
+    date: "18.05.2026 - 19.05.2026",
+    pair: "EURUSD",
+    direction: "Long",
+    rr: -1,
+  },
+  {
+    date: "13.05.2026 - 14.05.2026",
+    pair: "XAU",
+    direction: "Long",
+    rr: -1,
+  },
+  {
+    date: "07.05.2026 - 08.05.2026",
+    pair: "EURUSD",
+    direction: "Long",
+    rr: -1,
+  },
+  {
+    date: "05.05.2026 - 08.05.2026",
+    pair: "EURUSD",
+    direction: "Long",
+    rr: 0,
   },
 ];
 
@@ -86,7 +85,7 @@ document.querySelectorAll(".pair-mark img").forEach((image) => {
 function createTradeRow(trade) {
   const direction = trade.direction.toLowerCase();
   const tone = trade.rr >= 0 ? "positive" : "negative";
-  const pairCode = trade.pair.toLowerCase();
+  const pairCode = getPairImageCode(trade.pair);
   const directionIcon = createDirectionIcon(direction);
 
   return `
@@ -138,9 +137,10 @@ function createDirectionIcon(direction) {
 
 function createLedger(items) {
   const gross = sum(items.map((item) => item.rr));
-  const swap = sum(items.map((item) => item.costs.swap));
-  const commission = sum(items.map((item) => item.costs.commission));
-  const slippage = sum(items.map((item) => item.costs.slippage));
+  const costs = journalSettings.costs || getTradeCosts(items);
+  const swap = Number(costs.swap || 0);
+  const commission = Number(costs.commission || 0);
+  const slippage = Number(costs.slippage || 0);
   const totalCosts = swap + commission + slippage;
   const net = gross - totalCosts;
 
@@ -174,6 +174,14 @@ function createLedger(items) {
       <strong class="${valueTone(net)}">${formatRR(net)}</strong>
     </div>
   `;
+}
+
+function getTradeCosts(items) {
+  return {
+    swap: sum(items.map((item) => item.costs?.swap || 0)),
+    commission: sum(items.map((item) => item.costs?.commission || 0)),
+    slippage: sum(items.map((item) => item.costs?.slippage || 0)),
+  };
 }
 
 function createEquityCurve(items) {
@@ -270,6 +278,14 @@ function sum(values) {
   return values.reduce((total, value) => total + Number(value || 0), 0);
 }
 
+function getPairImageCode(pair) {
+  const imageCodes = {
+    XAU: "xauusd",
+  };
+
+  return (imageCodes[pair] || pair).toLowerCase();
+}
+
 function setText(selector, value) {
   const element = document.querySelector(selector);
   if (element) {
@@ -310,9 +326,12 @@ function setAvatarEmpty(image) {
 }
 
 function calculateWinRate(items) {
-  if (!items.length) return 0;
   const wins = items.filter((item) => item.rr > 0).length;
-  return Math.round((wins / items.length) * 100);
+  const losses = items.filter((item) => item.rr < 0).length;
+  const countedTrades = wins + losses;
+
+  if (!countedTrades) return 0;
+  return Math.round((wins / countedTrades) * 100);
 }
 
 function formatDateText(value) {
