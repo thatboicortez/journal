@@ -217,7 +217,6 @@ function createEquityCurve(items) {
         .map(
           (value) => `
             <line class="equity-grid" x1="${padding.left}" y1="${getY(value)}" x2="${width - padding.right}" y2="${getY(value)}"></line>
-            <text class="equity-axis" x="0" y="${getY(value) + 4}">${formatChartNumber(value)}</text>
           `,
         )
         .join("")}
