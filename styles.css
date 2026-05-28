@@ -40,7 +40,6 @@ body {
 .trader-card {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 84px);
   padding: 30px;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
@@ -194,7 +193,7 @@ p {
 .journal-body {
   position: relative;
   margin: 0 -30px -30px;
-  padding: 28px 30px 210px;
+  padding: 28px 30px 36px;
 }
 
 .journal-body::before,
@@ -558,7 +557,7 @@ tbody tr:hover {
 
   .journal-body {
     margin: 0 -20px -20px;
-    padding: 22px 20px 120px;
+    padding: 22px 20px 28px;
   }
 
   .card-header {
