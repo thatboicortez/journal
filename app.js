@@ -23,7 +23,7 @@ const trades = [
   },
   {
     date: "13.05.2026 - 14.05.2026",
-    pair: "XAU",
+    pair: "XAUUSD",
     direction: "Long",
     rr: -1,
   },
@@ -278,11 +278,7 @@ function sum(values) {
 }
 
 function getPairImageCode(pair) {
-  const imageCodes = {
-    XAU: "xauusd",
-  };
-
-  return (imageCodes[pair] || pair).toLowerCase();
+  return pair.toLowerCase();
 }
 
 function setText(selector, value) {
