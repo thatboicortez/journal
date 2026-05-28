@@ -208,7 +208,7 @@ function createEquityCurve(items) {
   const linePoints = points.map((point, index) => `${getX(index)},${getY(point.value)}`);
   const linePath = `M ${linePoints.join(" L ")}`;
   const areaPath = `${linePath} L ${getX(points.length - 1)},${getY(0)} L ${getX(0)},${getY(0)} Z`;
-  const gridValues = getGridValues(yMin, yMax);
+  const gridValues = getGridValues(minValue, maxValue);
   const zeroY = getY(0);
 
   return `
@@ -246,15 +246,25 @@ function createEquityCurve(items) {
 }
 
 function getGridValues(minValue, maxValue) {
-  const steps = 4;
-  const values = [];
+  const values = [0];
 
-  for (let index = 0; index <= steps; index += 1) {
-    const value = minValue + ((maxValue - minValue) * index) / steps;
-    values.push(Number(value.toFixed(2)));
+  if (maxValue > 5) {
+    values.push(5);
   }
 
-  return values.reverse();
+  if (maxValue > 10) {
+    values.push(10);
+  }
+
+  if (minValue < -5) {
+    values.push(-5);
+  }
+
+  if (minValue < -10) {
+    values.push(-10);
+  }
+
+  return values.sort((a, b) => b - a);
 }
 
 function sum(values) {
@@ -325,7 +335,7 @@ function formatCost(value) {
 function formatChartNumber(value) {
   if (Math.abs(value) < 0.005) return "0";
   const sign = value > 0 ? "+" : "";
-  return `${sign}${value.toFixed(2)}`;
+  return `${sign}${Number(value.toFixed(2))}`;
 }
 
 function valueTone(value) {
