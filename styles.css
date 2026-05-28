@@ -304,7 +304,9 @@ tbody tr:hover {
 }
 
 .pair-name {
+  display: inline-block;
   text-decoration: none;
+  transform: translateY(1.5px);
 }
 
 .direction-pill {
