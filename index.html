@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Journal</title>
-    <link rel="stylesheet" href="styles.css?v=trader-card-13" />
+    <link rel="stylesheet" href="styles.css?v=trader-card-15" />
   </head>
   <body>
     <main class="journal-page">
@@ -41,36 +41,38 @@
           </div>
         </header>
 
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Pair</th>
-                <th scope="col">Direction</th>
-                <th scope="col" class="rr-column">RR</th>
-              </tr>
-            </thead>
-            <tbody id="tradeRows"></tbody>
-          </table>
-        </div>
-
-        <section class="rr-summary" aria-label="RR summary">
-          <div class="summary-title">
-            <p class="label">Monthly result</p>
-            <h2>Risk to reward summary</h2>
-            <div
-              class="equity-chart"
-              id="equityCurve"
-              aria-label="Equity curve"
-            ></div>
+        <div class="journal-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Pair</th>
+                  <th scope="col">Direction</th>
+                  <th scope="col" class="rr-column">RR</th>
+                </tr>
+              </thead>
+              <tbody id="tradeRows"></tbody>
+            </table>
           </div>
 
-          <div class="rr-ledger" id="rrLedger"></div>
-        </section>
+          <section class="rr-summary" aria-label="RR summary">
+            <div class="summary-title">
+              <p class="label">Monthly result</p>
+              <h2>Risk to reward summary</h2>
+              <div
+                class="equity-chart"
+                id="equityCurve"
+                aria-label="Equity curve"
+              ></div>
+            </div>
+
+            <div class="rr-ledger" id="rrLedger"></div>
+          </section>
+        </div>
       </section>
     </main>
 
-    <script src="app.js?v=trader-card-13"></script>
+    <script src="app.js?v=trader-card-15"></script>
   </body>
 </html>
