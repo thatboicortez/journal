@@ -52,21 +52,29 @@ const rowsElement = document.querySelector("#tradeRows");
 const ledgerElement = document.querySelector("#rrLedger");
 const avatarElement = document.querySelector("#traderAvatar");
 
-document.querySelector("#traderName").textContent = journalSettings.trader;
-document.querySelector("#journalPeriod").textContent = journalSettings.period;
-document.querySelector("#tradeCount").textContent = trades.length;
-document.querySelector("#winRate").textContent = `${calculateWinRate(trades)}%`;
+setText("#traderName", journalSettings.trader);
+setText("#journalPeriod", journalSettings.period);
+setText("#tradeCount", trades.length);
+setText("#winRate", `${calculateWinRate(trades)}%`);
 
-rowsElement.innerHTML = trades.map(createTradeRow).join("");
-ledgerElement.innerHTML = createLedger(trades);
+if (rowsElement) {
+  rowsElement.innerHTML = trades.map(createTradeRow).join("");
+}
 
-avatarElement.addEventListener("error", () => {
-  avatarElement.style.display = "none";
-});
+if (ledgerElement) {
+  ledgerElement.innerHTML = createLedger(trades);
+}
+
+if (avatarElement) {
+  prepareAvatar(avatarElement);
+  avatarElement.addEventListener("error", () => {
+    setAvatarEmpty(avatarElement);
+  });
+}
 
 document.querySelectorAll(".pair-mark img").forEach((image) => {
   image.addEventListener("error", () => {
-    image.style.display = "none";
+    image.closest(".pair-mark")?.remove();
   });
 });
 
@@ -74,7 +82,6 @@ function createTradeRow(trade) {
   const direction = trade.direction.toLowerCase();
   const tone = trade.rr >= 0 ? "positive" : "negative";
   const pairCode = trade.pair.toLowerCase();
-  const fallback = trade.pair.slice(0, 2).toUpperCase();
 
   return `
     <tr>
@@ -82,8 +89,13 @@ function createTradeRow(trade) {
       <td>
         <div class="pair-cell">
           <span class="pair-mark">
-            <span class="pair-fallback">${fallback}</span>
-            <img src="assets/pairs/${pairCode}.png" alt="${escapeHTML(trade.pair)} logo" />
+            <span class="pair-fallback" aria-hidden="true"></span>
+            <img
+              src="assets/pairs/${pairCode}.png"
+              width="33"
+              height="33"
+              alt="${escapeHTML(trade.pair)} logo"
+            />
           </span>
           <span class="pair-name">${escapeHTML(trade.pair)}</span>
         </div>
@@ -147,6 +159,45 @@ function createLedger(items) {
 
 function sum(values) {
   return values.reduce((total, value) => total + Number(value || 0), 0);
+}
+
+function setText(selector, value) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.textContent = value;
+  }
+}
+
+function prepareAvatar(image) {
+  if (image.complete) {
+    handleAvatarLoad(image);
+    return;
+  }
+
+  image.addEventListener("load", () => {
+    handleAvatarLoad(image);
+  });
+}
+
+function handleAvatarLoad(image) {
+  if (!image.naturalWidth || !image.naturalHeight) {
+    setAvatarEmpty(image);
+    return;
+  }
+
+  const avatar = image.closest(".avatar");
+  if (avatar) {
+    avatar.classList.remove("avatar--empty");
+    avatar.classList.add("avatar--loaded");
+  }
+}
+
+function setAvatarEmpty(image) {
+  const avatar = image.closest(".avatar");
+  if (avatar) {
+    avatar.classList.remove("avatar--loaded");
+    avatar.classList.add("avatar--empty");
+  }
 }
 
 function calculateWinRate(items) {
