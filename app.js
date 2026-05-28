@@ -10,19 +10,13 @@ const journalSettings = {
 
 const trades = [
   {
-    date: "25.05.2026 - 29.05.2026",
+    date: "05.05.2026 - 08.05.2026",
     pair: "EURUSD",
     direction: "Long",
-    rr: 3,
+    rr: 0,
   },
   {
-    date: "21.05.2026 - 21.05.2026",
-    pair: "EURUSD",
-    direction: "Long",
-    rr: -1,
-  },
-  {
-    date: "18.05.2026 - 19.05.2026",
+    date: "07.05.2026 - 08.05.2026",
     pair: "EURUSD",
     direction: "Long",
     rr: -1,
@@ -34,16 +28,22 @@ const trades = [
     rr: -1,
   },
   {
-    date: "07.05.2026 - 08.05.2026",
+    date: "18.05.2026 - 19.05.2026",
     pair: "EURUSD",
     direction: "Long",
     rr: -1,
   },
   {
-    date: "05.05.2026 - 08.05.2026",
+    date: "21.05.2026 - 21.05.2026",
     pair: "EURUSD",
     direction: "Long",
-    rr: 0,
+    rr: -1,
+  },
+  {
+    date: "25.05.2026 - 29.05.2026",
+    pair: "EURUSD",
+    direction: "Long",
+    rr: 3,
   },
 ];
 
@@ -185,11 +185,10 @@ function getTradeCosts(items) {
 }
 
 function createEquityCurve(items) {
-  const chronologicalTrades = [...items].reverse();
   const points = [{ label: "Start", value: 0 }];
   let equity = 0;
 
-  chronologicalTrades.forEach((trade, index) => {
+  items.forEach((trade, index) => {
     equity += Number(trade.rr || 0);
     points.push({
       label: `T${index + 1}`,
