@@ -345,7 +345,7 @@ tbody tr:hover {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(380px, 0.42fr);
   gap: 36px;
-  align-items: start;
+  align-items: stretch;
   margin-top: 28px;
 }
 
@@ -420,6 +420,8 @@ tbody tr:hover {
 .rr-ledger {
   display: grid;
   gap: 8px;
+  align-content: end;
+  height: 100%;
 }
 
 .ledger-line,
