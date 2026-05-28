@@ -50,6 +50,7 @@ const trades = [
 
 const rowsElement = document.querySelector("#tradeRows");
 const ledgerElement = document.querySelector("#rrLedger");
+const equityCurveElement = document.querySelector("#equityCurve");
 const avatarElement = document.querySelector("#traderAvatar");
 
 setText("#traderName", journalSettings.trader);
@@ -63,6 +64,10 @@ if (rowsElement) {
 
 if (ledgerElement) {
   ledgerElement.innerHTML = createLedger(trades);
+}
+
+if (equityCurveElement) {
+  equityCurveElement.innerHTML = createEquityCurve(trades);
 }
 
 if (avatarElement) {
@@ -157,6 +162,87 @@ function createLedger(items) {
   `;
 }
 
+function createEquityCurve(items) {
+  const chronologicalTrades = [...items].reverse();
+  const points = [{ label: "Start", value: 0 }];
+  let equity = 0;
+
+  chronologicalTrades.forEach((trade, index) => {
+    equity += Number(trade.rr || 0);
+    points.push({
+      label: `T${index + 1}`,
+      value: Number(equity.toFixed(2)),
+    });
+  });
+
+  const width = 760;
+  const height = 190;
+  const padding = { top: 30, right: 18, bottom: 30, left: 38 };
+  const values = points.map((point) => point.value);
+  const minValue = Math.min(0, ...values);
+  const maxValue = Math.max(0, ...values);
+  const range = maxValue - minValue || 1;
+  const yMin = minValue - range * 0.14;
+  const yMax = maxValue + range * 0.22;
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+
+  const getX = (index) => padding.left + (plotWidth * index) / (points.length - 1 || 1);
+  const getY = (value) =>
+    padding.top + ((yMax - value) / (yMax - yMin || 1)) * plotHeight;
+
+  const linePoints = points.map((point, index) => `${getX(index)},${getY(point.value)}`);
+  const linePath = `M ${linePoints.join(" L ")}`;
+  const areaPath = `${linePath} L ${getX(points.length - 1)},${getY(0)} L ${getX(0)},${getY(0)} Z`;
+  const gridValues = getGridValues(yMin, yMax);
+  const zeroY = getY(0);
+
+  return `
+    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Gross RR equity curve">
+      ${gridValues
+        .map(
+          (value) => `
+            <line class="equity-grid" x1="${padding.left}" y1="${getY(value)}" x2="${width - padding.right}" y2="${getY(value)}"></line>
+            <text class="equity-axis" x="0" y="${getY(value) + 4}">${formatChartNumber(value)}</text>
+          `,
+        )
+        .join("")}
+
+      <line class="equity-zero" x1="${padding.left}" y1="${zeroY}" x2="${width - padding.right}" y2="${zeroY}"></line>
+      <path class="equity-area" d="${areaPath}"></path>
+      <path class="equity-line" d="${linePath}"></path>
+
+      ${points
+        .map((point, index) => {
+          const x = getX(index);
+          const y = getY(point.value);
+          const labelOffset = point.value >= 0 ? -10 : 18;
+          const anchor = index === 0 ? "start" : index === points.length - 1 ? "end" : "middle";
+
+          return `
+            <circle class="equity-point" cx="${x}" cy="${y}" r="4"></circle>
+            <text class="equity-label" x="${x}" y="${y + labelOffset}" text-anchor="${anchor}">
+              ${formatChartNumber(point.value)}
+            </text>
+          `;
+        })
+        .join("")}
+    </svg>
+  `;
+}
+
+function getGridValues(minValue, maxValue) {
+  const steps = 4;
+  const values = [];
+
+  for (let index = 0; index <= steps; index += 1) {
+    const value = minValue + ((maxValue - minValue) * index) / steps;
+    values.push(Number(value.toFixed(2)));
+  }
+
+  return values.reverse();
+}
+
 function sum(values) {
   return values.reduce((total, value) => total + Number(value || 0), 0);
 }
@@ -220,6 +306,12 @@ function formatRR(value) {
 function formatCost(value) {
   if (value === 0) return "-0.00R";
   return `-${value.toFixed(2)}R`;
+}
+
+function formatChartNumber(value) {
+  if (Math.abs(value) < 0.005) return "0";
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${value.toFixed(2)}`;
 }
 
 function valueTone(value) {
