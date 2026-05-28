@@ -99,14 +99,27 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
 }
 
 .avatar-fallback {
   position: relative;
   z-index: 1;
-  font-size: 18px;
-  font-weight: 760;
-  line-height: 1;
+  width: 100%;
+  height: 100%;
+  background: var(--black);
+}
+
+.avatar.avatar--loaded img {
+  opacity: 1;
+}
+
+.avatar.avatar--loaded .avatar-fallback {
+  display: none;
+}
+
+.avatar.avatar--empty img {
+  display: none;
 }
 
 .label {
@@ -240,13 +253,9 @@ tbody tr:hover {
   width: 33px;
   height: 33px;
   place-items: center;
-  overflow: hidden;
-  color: var(--white);
-  font-size: 10px;
-  font-weight: 800;
-  border: 1px solid rgba(0, 0, 0, 0.18);
-  border-radius: 999px;
-  background: var(--black);
+  overflow: visible;
+  border: 0;
+  background: transparent;
 }
 
 .pair-mark img {
@@ -254,12 +263,11 @@ tbody tr:hover {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .pair-fallback {
-  position: relative;
-  z-index: 1;
+  display: none;
 }
 
 .pair-name {
