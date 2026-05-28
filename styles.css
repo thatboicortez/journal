@@ -9,7 +9,7 @@
   --soft-white: rgba(255, 255, 255, 0.72);
   --black: #050505;
   --glass-fill: rgba(18, 18, 17, 0.18);
-  --glass-blur: blur(3px);
+  --glass-blur: blur(1px);
 }
 
 * {
