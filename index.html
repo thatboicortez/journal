@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trading Journal</title>
-    <link rel="stylesheet" href="styles.css?v=trader-card-8" />
+    <link rel="stylesheet" href="styles.css?v=trader-card-9" />
   </head>
   <body>
     <main class="journal-page">
@@ -59,6 +59,11 @@
           <div class="summary-title">
             <p class="label">Monthly result</p>
             <h2>Risk to reward summary</h2>
+            <div
+              class="equity-chart"
+              id="equityCurve"
+              aria-label="Equity curve"
+            ></div>
           </div>
 
           <div class="rr-ledger" id="rrLedger"></div>
@@ -66,6 +71,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=trader-card-8"></script>
+    <script src="app.js?v=trader-card-9"></script>
   </body>
 </html>
