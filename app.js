@@ -10,19 +10,19 @@ const journalSettings = {
 
 const trades = [
   {
-    date: "05.05.2026 - 08.05.2026",
+    date: "05.05.2026 - 14.05.2026",
     pair: "EURUSD",
     direction: "Long",
     rr: 0,
   },
   {
-    date: "07.05.2026 - 08.05.2026",
+    date: "07.05.2026 - 14.05.2026",
     pair: "EURUSD",
     direction: "Long",
     rr: -1,
   },
   {
-    date: "13.05.2026 - 14.05.2026",
+    date: "13.05.2026 - 15.05.2026",
     pair: "XAUUSD",
     direction: "Long",
     rr: -1,
@@ -38,12 +38,6 @@ const trades = [
     pair: "EURUSD",
     direction: "Long",
     rr: -1,
-  },
-  {
-    date: "25.05.2026 - 29.05.2026",
-    pair: "EURUSD",
-    direction: "Long",
-    rr: 3,
   },
 ];
 
