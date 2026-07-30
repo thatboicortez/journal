@@ -3,9 +3,9 @@ const journalSettings = {
   period: "Jun 2026",
   riskPerTradePercent: 1,
   costs: {
-    swap: 0.14,
-    commission: 0.05,
-    slippage: 0.11,
+    swap: 0.05,
+    commission: 0.07,
+    slippage: 0.05,
   },
 };
 
