@@ -1,6 +1,6 @@
 const journalSettings = {
   trader: "trademark830am",
-  period: "Jun 2026",
+  period: "Jul 2026",
   riskPerTradePercent: 1,
   costs: {
     swap: 0.05,
