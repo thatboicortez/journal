@@ -65,6 +65,7 @@ const trades = [
     pair: "GBPUSD",
     direction: "Long",
     rr: 2.4,
+  },
 ];
 
 const rowsElement = document.querySelector("#tradeRows");
