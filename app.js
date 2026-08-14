@@ -61,7 +61,7 @@ const trades = [
   },
   {
     number: 62,
-    date: "24.07.2026 - 29.07.2026",
+    date: "30.07.2026 - 14.08.2026",
     pair: "GBPUSD",
     direction: "Long",
     rr: 2.4,
