@@ -59,6 +59,12 @@ const trades = [
     direction: "Short",
     rr: -1,
   },
+  {
+    number: 62,
+    date: "24.07.2026 - 29.07.2026",
+    pair: "GBPUSD",
+    direction: "Long",
+    rr: 2.4,
 ];
 
 const rowsElement = document.querySelector("#tradeRows");
